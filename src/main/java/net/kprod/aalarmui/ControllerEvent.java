@@ -13,8 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class ControllerEvent {
     private Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    @RequestMapping("/event")
-    public void event(@RequestParam String type) {
-        LOG.debug("event received " + type);
+    @RequestMapping("/eventMotion")
+    public void eventMotion(@RequestParam String captionFilename) {
+        LOG.debug("event motion received caption [{}]", captionFilename);
+    }
+
+    @RequestMapping("/eventState")
+    public void eventState(@RequestParam String state) {
+        LOG.debug("event received state [{}]", state);
+    }
+
+    @RequestMapping("/eventSensor")
+    public void eventSensor(@RequestParam String sensor, @RequestParam String event) {
+        LOG.debug("event sensor received sensor [{}] event [{}]", sensor, event);
     }
 }
