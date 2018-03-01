@@ -1,7 +1,9 @@
 package net.kprod.aalarmui.bean;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import net.kprod.aalarmui.enums.EnumEventStatus;
 import net.kprod.aalarmui.enums.EnumEventType;
+import net.kprod.aalarmui.utils.JsonDateSerializer;
 
 import java.time.LocalDateTime;
 
@@ -42,6 +44,7 @@ public class Event {
         return this;
     }
 
+    @JsonSerialize(using = JsonDateSerializer.class)
     public LocalDateTime getDateEvent() {
         return dateEvent;
     }
