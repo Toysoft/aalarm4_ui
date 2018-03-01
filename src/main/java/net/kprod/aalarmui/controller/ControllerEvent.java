@@ -23,22 +23,22 @@ public class ControllerEvent {
     private ServiceEvent serviceEvent;
 
     @RequestMapping("/motion")
-    public void eventMotion(@RequestParam String captionFilename) {
-        LOG.debug("event motion received caption [{}]", captionFilename);
+    public void eventMotion(@RequestParam String captionFilename) throws Exception {
+        serviceEvent.recordEventMotion(captionFilename);
     }
 
     @RequestMapping("/state")
-    public void eventState(@RequestParam String state) {
+    public void eventState(@RequestParam String state) throws Exception {
         serviceEvent.recordEventState(state);
     }
 
     @RequestMapping("/sensor")
-    public void eventSensor(@RequestParam String sensor, @RequestParam String event) {
+    public void eventSensor(@RequestParam String sensor, @RequestParam String event) throws Exception {
         serviceEvent.recordEventSensor(sensor, event);
     }
 
     @RequestMapping("/list")
-    public List<Event> list() {
+    public List<Event> list() throws Exception {
         return serviceEvent.listEventAll();
     }
 }

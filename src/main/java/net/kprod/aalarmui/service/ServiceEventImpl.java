@@ -2,7 +2,9 @@ package net.kprod.aalarmui.service;
 
 import net.kprod.aalarmui.bean.Event;
 import net.kprod.aalarmui.db.entity.EntityEvent;
+import net.kprod.aalarmui.db.entity.EntityEventMotion;
 import net.kprod.aalarmui.db.repository.RepositoryEvent;
+import net.kprod.aalarmui.db.repository.RepositoryEventMotion;
 import net.kprod.aalarmui.enums.EnumEventStatus;
 import net.kprod.aalarmui.enums.EnumEventType;
 import org.slf4j.Logger;
@@ -25,9 +27,12 @@ public class ServiceEventImpl implements ServiceEvent {
     @Autowired
     private RepositoryEvent repositoryEvent;
 
+    @Autowired
+    private RepositoryEventMotion repositoryEventMotion;
+
     @Override
     public void recordEventState(String state) {
-        this.recordEvent(EnumEventType.state.name(), this.getEventStatus(EnumEventType.state, state));
+        this.recordEvent(EnumEventType.alarm.name(), this.getEventStatus(EnumEventType.alarm, state));
     }
 
     @Override
@@ -45,18 +50,26 @@ public class ServiceEventImpl implements ServiceEvent {
         }
 
         if(!enumEventStatus.getSensorType().equals(enumEventType)) {
-            LOG.error("State [{}] is not a valid state", status);
+            LOG.error("State [{}] is not a valid alarm", status);
             return null;
         }
 
         return enumEventStatus;
     }
 
-    @Override
     @Transactional
-    public void recordEvent(String emmiterId, EnumEventStatus status) {
+    private void recordEvent(String emmiterId, EnumEventStatus status) {
         EntityEvent entityEvent = new EntityEvent(LocalDateTime.now(), emmiterId, status);
         repositoryEvent.save(entityEvent);
+        LOG.debug("Recorded event [{}] from [{}]", status, emmiterId);
+    }
+
+    @Override
+    @Transactional
+    public void recordEventMotion(String path) {
+        EntityEventMotion entityEventMotion = new EntityEventMotion(LocalDateTime.now(), path);
+        repositoryEventMotion.save(entityEventMotion);
+        recordEvent(EnumEventType.camera.name(), EnumEventStatus.motion);
     }
 
     @Override

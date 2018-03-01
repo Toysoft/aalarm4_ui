@@ -6,12 +6,13 @@ package net.kprod.aalarmui.enums;
 public enum EnumEventStatus {
     open(EnumEventType.doorSensor),
     close(EnumEventType.doorSensor),
-    offline(EnumEventType.state),
-    idle(EnumEventType.state),
-    online(EnumEventType.state),
-    breach(EnumEventType.state),
-    warning(EnumEventType.state),
-    alert(EnumEventType.state);
+    offline(EnumEventType.alarm),
+    idle(EnumEventType.alarm),
+    online(EnumEventType.alarm),
+    breach(EnumEventType.alarm),
+    warning(EnumEventType.alarm),
+    alert(EnumEventType.alarm),
+    motion(EnumEventType.camera);
 
     private EnumEventType sensorType;
 
