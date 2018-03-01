@@ -1,7 +1,5 @@
 package net.kprod.aalarmui.controller;
 
-import net.kprod.aalarmui.enums.EnumEventStatus;
-import net.kprod.aalarmui.enums.EnumEventType;
 import net.kprod.aalarmui.service.ServiceEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +26,11 @@ public class ControllerEvent {
 
     @RequestMapping("/state")
     public void eventState(@RequestParam String state) {
-
-
+        serviceEvent.recordEventState(state);
     }
 
     @RequestMapping("/sensor")
     public void eventSensor(@RequestParam String sensor, @RequestParam String event) {
+        serviceEvent.recordEventSensor(sensor, event);
     }
 }
