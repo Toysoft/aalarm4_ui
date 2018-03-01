@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,7 +46,19 @@ public class ControllerEvent {
 
     @ApiOperation(value = "List events")
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Event> list() throws Exception {
-        return serviceEvent.listEventAll();
+    public ResponseEntity<List<Event>> list() throws Exception {
+        return ResponseEntity.ok(serviceEvent.listEventAll());
+    }
+
+    @ApiOperation(value = "Last alarm state")
+    @RequestMapping(value = "/alarm/last", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Event> lastAlarmState() throws Exception {
+        return ResponseEntity.ok(serviceEvent.getLastAlarmState());
+    }
+
+    @ApiOperation(value = "Last sensor status")
+    @RequestMapping(value = "/sensor/last", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Event> lastSensorStatus() throws Exception {
+        return ResponseEntity.ok(serviceEvent.getLastSensorStatus());
     }
 }

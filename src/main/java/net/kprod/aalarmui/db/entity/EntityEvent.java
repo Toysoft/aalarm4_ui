@@ -1,6 +1,7 @@
 package net.kprod.aalarmui.db.entity;
 
 import net.kprod.aalarmui.enums.EnumEventStatus;
+import net.kprod.aalarmui.enums.EnumEventType;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,6 +20,9 @@ public class EntityEvent {
     private String emmiterId;
 
     @Enumerated(EnumType.STRING)
+    private EnumEventType enumEventType;
+
+    @Enumerated(EnumType.STRING)
     private EnumEventStatus enumSensorStatus;
 
     public EntityEvent() {
@@ -28,6 +32,7 @@ public class EntityEvent {
         this.dateEvent = dateEvent;
         this.emmiterId = emmiterId;
         this.enumSensorStatus = enumSensorStatus;
+        this.enumEventType = enumSensorStatus.getSensorType();
     }
 
     public Long getId() {
@@ -60,5 +65,14 @@ public class EntityEvent {
 
     public void setEnumSensorStatus(EnumEventStatus enumSensorStatus) {
         this.enumSensorStatus = enumSensorStatus;
+    }
+
+    public EnumEventType getEnumEventType() {
+        return enumEventType;
+    }
+
+    public EntityEvent setEnumEventType(EnumEventType enumEventType) {
+        this.enumEventType = enumEventType;
+        return this;
     }
 }

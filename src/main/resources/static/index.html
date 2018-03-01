@@ -58,6 +58,15 @@
         <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
     </div>
 
+    <div class="row">
+        <div class="col-sm" id="idAlarmState">
+
+        </div>
+        <div class="col-sm" id="idSensorStatus">
+
+        </div>
+    </div>
+
 </main><!-- /.container -->
 
 <!-- Bootstrap core JavaScript
@@ -69,11 +78,37 @@
 
 <script type="text/javascript">
     $( document ).ready(function() {
-        $.get( "/event/list", function( response ) {
-            console.log( response ); // server response
+        $.getJSON('/event/list')
+            .done(function( data ) {
+                //console.log(data);
+                $.each( data, function( key, val ) {
+                    console.log(key + val)
+                });
+            }).fail(function(data){
+            console.log("failed " + data);
         });
-
     });
+
+    $( document ).ready(function() {
+        $.getJSON('/event/alarm/last')
+            .done(function( data ) {
+                console.log(data);
+                $('#idAlarmState').html(data.eventStatus);
+            }).fail(function(data){
+            console.log("failed " + data);
+        });
+    });
+
+    $( document ).ready(function() {
+        $.getJSON('/event/sensor/last')
+            .done(function( data ) {
+                console.log(data);
+                $('#idSensorStatus').html(data.eventStatus);
+            }).fail(function(data){
+            console.log("failed " + data);
+        });
+    });
+
 </script>
 
 </body>

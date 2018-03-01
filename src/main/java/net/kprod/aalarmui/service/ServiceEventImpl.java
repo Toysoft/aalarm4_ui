@@ -7,6 +7,7 @@ import net.kprod.aalarmui.db.repository.RepositoryEvent;
 import net.kprod.aalarmui.db.repository.RepositoryEventMotion;
 import net.kprod.aalarmui.enums.EnumEventStatus;
 import net.kprod.aalarmui.enums.EnumEventType;
+import net.kprod.aalarmui.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,10 +88,22 @@ public class ServiceEventImpl implements ServiceEvent {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Event getLastAlarmState() throws ServiceException {
+        EntityEvent entityEvent = repositoryEvent.findFirstByEnumEventTypeIsOrderByIdDesc(EnumEventType.alarm);
+        return mapEvent(entityEvent);
+    }
+
+    @Override
+    public Event getLastSensorStatus() throws ServiceException {
+        EntityEvent entityEvent = repositoryEvent.findFirstByEnumEventTypeIsOrderByIdDesc(EnumEventType.doorSensor);
+        return mapEvent(entityEvent);
+    }
+
     private Event mapEvent(EntityEvent entityEvent) {
         Event event = new Event()
                 .setDateEvent(entityEvent.getDateEvent())
-                .setEventType(entityEvent.getEnumSensorStatus().getSensorType())
+                .setEventType(entityEvent.getEnumEventType())
                 .setEventStatus(entityEvent.getEnumSensorStatus())
                 .setEmmiterId(entityEvent.getEmmiterId())
                 .setId(entityEvent.getId());

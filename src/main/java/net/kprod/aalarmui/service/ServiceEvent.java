@@ -15,4 +15,6 @@ public interface ServiceEvent {
     void recordEventMotion(String path) throws ServiceException;
     List<Event> listEventAll() throws ServiceException;
     List<Event> listEventByType(EnumEventType eventType) throws ServiceException;
+    Event getLastAlarmState() throws ServiceException;
+    Event getLastSensorStatus() throws ServiceException;
 }

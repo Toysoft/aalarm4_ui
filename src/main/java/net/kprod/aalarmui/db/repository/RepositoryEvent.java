@@ -1,6 +1,7 @@
 package net.kprod.aalarmui.db.repository;
 
 import net.kprod.aalarmui.db.entity.EntityEvent;
+import net.kprod.aalarmui.enums.EnumEventType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface RepositoryEvent extends JpaRepository<EntityEvent, Long> {
+    EntityEvent findFirstByIdIsNotNullOrderByIdDesc();
+    EntityEvent findFirstByEnumEventTypeIsOrderByIdDesc(EnumEventType enumEventType);
 }
