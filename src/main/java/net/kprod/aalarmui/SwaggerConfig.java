@@ -30,4 +30,13 @@ public class SwaggerConfig {
 				.build();
 	}
 
+	@Bean
+	public Docket motionsApi() {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("motions")
+				.apiInfo(apiInfo()).select()
+				.paths(PathSelectors.regex("/motion/.*"))
+				.build();
+	}
+
 }

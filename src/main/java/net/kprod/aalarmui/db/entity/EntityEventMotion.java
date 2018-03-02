@@ -17,13 +17,37 @@ public class EntityEventMotion {
 
     private LocalDateTime dateEvent;
 
-    private String path;
+    private String filename;
 
     public EntityEventMotion() {
     }
 
-    public EntityEventMotion(LocalDateTime dateEvent, String path) {
+    public EntityEventMotion(LocalDateTime dateEvent, String filename) {
         this.dateEvent = dateEvent;
-        this.path = path;
+        this.filename = filename;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getDateEvent() {
+        return dateEvent;
+    }
+
+    public void setDateEvent(LocalDateTime dateEvent) {
+        this.dateEvent = dateEvent;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

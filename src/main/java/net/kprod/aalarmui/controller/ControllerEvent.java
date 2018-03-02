@@ -26,12 +26,6 @@ public class ControllerEvent {
     @Autowired
     private ServiceEvent serviceEvent;
 
-    @ApiOperation(value = "Report motion event")
-    @RequestMapping(value = "/motion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void eventMotion(@RequestParam String captionFilename) throws Exception {
-        serviceEvent.recordEventMotion(captionFilename);
-    }
-
     @ApiOperation(value = "Report state change")
     @RequestMapping(value = "/state", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public void eventState(@RequestParam String state) throws Exception {

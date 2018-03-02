@@ -1,6 +1,7 @@
 package net.kprod.aalarmui.service;
 
 import net.kprod.aalarmui.bean.Event;
+import net.kprod.aalarmui.bean.Motion;
 import net.kprod.aalarmui.db.entity.EntityEvent;
 import net.kprod.aalarmui.db.entity.EntityEventMotion;
 import net.kprod.aalarmui.db.repository.RepositoryEvent;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,8 +70,11 @@ public class ServiceEventImpl implements ServiceEvent {
 
     @Override
     @Transactional
-    public void recordEventMotion(String path) {
-        EntityEventMotion entityEventMotion = new EntityEventMotion(LocalDateTime.now(), path);
+    public void recordEventMotion(String pathImage) {
+        Path path = Paths.get(pathImage);
+        String filename = path.getFileName().toString();
+
+        EntityEventMotion entityEventMotion = new EntityEventMotion(LocalDateTime.now(), filename);
         repositoryEventMotion.save(entityEventMotion);
         recordEvent(EnumEventType.camera.name(), EnumEventStatus.motion);
     }
@@ -100,6 +106,13 @@ public class ServiceEventImpl implements ServiceEvent {
         return mapEvent(entityEvent);
     }
 
+    @Override
+    public List<Motion> listMotionAll() throws ServiceException {
+        return repositoryEventMotion.findAll().stream()
+                .map(e -> mapMotion(e))
+                .collect(Collectors.toList());
+    }
+
     private Event mapEvent(EntityEvent entityEvent) {
         Event event = new Event()
                 .setDateEvent(entityEvent.getDateEvent())
@@ -110,5 +123,12 @@ public class ServiceEventImpl implements ServiceEvent {
         return event;
     }
 
+    private Motion mapMotion(EntityEventMotion entityEventMotion) {
+        Motion motion = new Motion()
+                .setId(entityEventMotion.getId())
+                .setDateEvent(entityEventMotion.getDateEvent())
+                .setFilename(entityEventMotion.getFilename());
+        return motion;
+    }
 
 }
