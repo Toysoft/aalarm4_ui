@@ -12,6 +12,7 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/datatables.min.css"/>
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet"/>
 
     <!-- Custom styles for this template -->
     <link href="css/aalarm.css" rel="stylesheet">
@@ -54,9 +55,30 @@
 
 <main role="main" class="container">
 
-    <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+    <div class="row">
+        <div class="col-sm">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="idDatePickerFromLabel">Date from</span>
+                </div>
+                <input id="idDatePickerFrom" type="text" class="form-control datepicker" placeholder="" aria-describedby="idDatePickerFromLabel"/>
+            </div>
+        </div>
+
+        <div class="col-sm">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="idDatePickerToLabel">Date to</span>
+                </div>
+                <input id="idDatePickerTo" type="text" class="form-control datepicker" placeholder="" aria-describedby="idDatePickerToLabel"/>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm">
+
         <img src="motions/01-20180302112637-00.jpg"/>
 
         <table id="idTableEvent" class="display" cellspacing="0" width="100%">
@@ -74,16 +96,9 @@
             </tbody>
         </table>
 
-    </div>
-
-    <div class="row">
-        <div class="col-sm" id="idAlarmState">
-
-        </div>
-        <div class="col-sm" id="idSensorStatus">
-
         </div>
     </div>
+
 
 </main><!-- /.container -->
 
@@ -94,9 +109,24 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script type="text/javascript" src="js/datatables.min.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
 
 <script type="text/javascript">
     $( document ).ready(function() {
+
+        $('#idDatePickerFrom').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii',
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true
+        });
+
+        $('#idDatePickerTo').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii',
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true
+        });
 
         table = $('#idTableEvent').DataTable({
             "searching": false,
@@ -134,21 +164,21 @@
             console.log("failed " + data);
         });
 
-        $.getJSON('/event/alarm/last')
-            .done(function( data ) {
-                console.log(data);
-                $('#idAlarmState').html(data.eventStatus);
-            }).fail(function(data){
-            console.log("failed " + data);
-        });
-
-        $.getJSON('/event/sensor/last')
-            .done(function( data ) {
-                console.log(data);
-                $('#idSensorStatus').html(data.eventStatus);
-            }).fail(function(data){
-            console.log("failed " + data);
-        });
+//        $.getJSON('/event/alarm/last')
+//            .done(function( data ) {
+//                console.log(data);
+//                $('#idAlarmState').html(data.eventStatus);
+//            }).fail(function(data){
+//            console.log("failed " + data);
+//        });
+//
+//        $.getJSON('/event/sensor/last')
+//            .done(function( data ) {
+//                console.log(data);
+//                $('#idSensorStatus').html(data.eventStatus);
+//            }).fail(function(data){
+//            console.log("failed " + data);
+//        });
     });
 
 </script>
