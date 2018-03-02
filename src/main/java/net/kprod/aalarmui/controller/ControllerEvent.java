@@ -1,18 +1,20 @@
 package net.kprod.aalarmui.controller;
 
 import io.swagger.annotations.ApiOperation;
+import net.kprod.aalarmui.bean.DataTableData;
+import net.kprod.aalarmui.bean.DataTablesRequest;
 import net.kprod.aalarmui.bean.Event;
+import net.kprod.aalarmui.db.entity.EntityEvent;
 import net.kprod.aalarmui.service.ServiceEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -42,6 +44,12 @@ public class ControllerEvent {
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Event>> list() throws Exception {
         return ResponseEntity.ok(serviceEvent.listEventAll());
+    }
+
+    @ApiOperation(value = "List events")
+    @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DataTableData> page(@RequestBody DataTablesRequest dataTablesRequest) throws Exception {
+        return ResponseEntity.ok(serviceEvent.pageEvent(dataTablesRequest, LocalDateTime.now().minusDays(1), LocalDateTime.now()));
     }
 
     @ApiOperation(value = "Last alarm state")

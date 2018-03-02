@@ -11,6 +11,7 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/datatables.min.css"/>
 
     <!-- Custom styles for this template -->
     <link href="css/aalarm.css" rel="stylesheet">
@@ -57,6 +58,22 @@
         <h1>Bootstrap starter template</h1>
         <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
         <img src="motions/01-20180302112637-00.jpg"/>
+
+        <table id="idTableEvent" class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Emmiter</th>
+                <th>Type</th>
+                <th>Status</th>
+
+            </tr>
+            </thead>
+            <tbody id="idListEvent">
+            </tbody>
+        </table>
+
     </div>
 
     <div class="row">
@@ -76,9 +93,37 @@
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script type="text/javascript" src="js/datatables.min.js"></script>
 
 <script type="text/javascript">
     $( document ).ready(function() {
+
+        table = $('#idTableEvent').DataTable({
+            "searching": false,
+            "serverSide": true,
+            'ajax': {
+                'url': '/event/page',
+                'type': 'POST',
+                'data':function(data)
+                {
+                    return data = JSON.stringify(data);
+                },
+                'dataType': "json",
+                'processData': false,
+                'contentType': 'application/json;charset=UTF-8'
+            },
+
+            "columns": [
+                { "data": "id" },
+                { "data": "dateEvent" },
+                { "data": "emmiterId" },
+                { "data": "eventType" },
+                { "data": "eventStatus" }
+
+            ],
+            "order" : [[0, "desc"]]
+        });
+
         $.getJSON('/event/list')
             .done(function( data ) {
                 //console.log(data);
@@ -88,9 +133,7 @@
             }).fail(function(data){
             console.log("failed " + data);
         });
-    });
 
-    $( document ).ready(function() {
         $.getJSON('/event/alarm/last')
             .done(function( data ) {
                 console.log(data);
@@ -98,9 +141,7 @@
             }).fail(function(data){
             console.log("failed " + data);
         });
-    });
 
-    $( document ).ready(function() {
         $.getJSON('/event/sensor/last')
             .done(function( data ) {
                 console.log(data);
