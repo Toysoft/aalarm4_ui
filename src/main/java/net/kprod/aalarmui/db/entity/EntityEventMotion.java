@@ -49,4 +49,13 @@ public class EntityEventMotion {
     public void setFilename(String filename) {
         this.filename = filename;
     }
+
+    public EntityEvent getEntityEvent() {
+        return entityEvent;
+    }
+
+    public EntityEventMotion setEntityEvent(EntityEvent entityEvent) {
+        this.entityEvent = entityEvent;
+        return this;
+    }
 }

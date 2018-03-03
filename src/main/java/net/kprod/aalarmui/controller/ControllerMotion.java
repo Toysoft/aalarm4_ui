@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -40,9 +41,14 @@ public class ControllerMotion {
         return ResponseEntity.ok(serviceEvent.listMotionAll());
     }
 
-    @ApiOperation(value = "List events 2")
-    @RequestMapping(value = "/list2", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Motion>> list2(@RequestParam Long idEvent) throws Exception {
-        return ResponseEntity.ok(serviceEvent.listMotionAroundEvent(LocalDateTime.now().minusDays(2), LocalDateTime.now(), idEvent));
+    @ApiOperation(value = "List motion events around event")
+    @RequestMapping(value = "/listAround", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Motion>> list2(@RequestParam String strDateFrom, @RequestParam String strDateTo, @RequestParam Long idEvent) throws Exception {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateFrom = LocalDateTime.parse(strDateFrom, formatter);
+        LocalDateTime dateTo = LocalDateTime.parse(strDateTo, formatter);
+
+        return ResponseEntity.ok(serviceEvent.listMotionAroundEvent(dateFrom, dateTo, idEvent));
     }
 }

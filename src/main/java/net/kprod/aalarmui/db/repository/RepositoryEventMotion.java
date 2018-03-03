@@ -14,4 +14,5 @@ import java.util.List;
 @Repository
 public interface RepositoryEventMotion extends JpaRepository<EntityEventMotion, Long> {
     List<EntityEventMotion> findAllByDateEventBetween(LocalDateTime dateFrom, LocalDateTime dateTo);
+    EntityEventMotion getByEntityEvent(EntityEvent entityEvent);
 }

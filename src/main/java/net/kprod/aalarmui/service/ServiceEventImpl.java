@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -163,12 +164,58 @@ public class ServiceEventImpl implements ServiceEvent {
 
     @Override
     public List<Motion> listMotionAroundEvent(LocalDateTime dateFrom, LocalDateTime dateTo, Long idEvent) throws ServiceException {
-        EntityEvent entityEvent = repositoryEvent.getOne(idEvent);
+        List<EntityEvent> listEntityEvent = repositoryEvent.findAllByDateEventBetween(dateFrom, dateTo);
 
-        return repositoryEventMotion.findAllByDateEventBetween(dateFrom, dateTo).stream()
-                .map(e -> mapMotion(e))
+
+        Optional<Event> latestNonCameraEvent = listEntityEvent.stream()
+                .filter(e -> e.getId() > idEvent)
+                .sorted(Comparator.comparing(EntityEvent::getId))
+                .map(e -> mapEvent(e))
+                .filter(e-> !e.getEventType().equals(EnumEventType.camera))
+                .findFirst();
+
+        Optional<Event> oldestNonCameraEvent = listEntityEvent.stream()
+                .filter(e -> e.getId() < idEvent)
+                .sorted(Comparator.comparing(EntityEvent::getId).reversed())
+                .map(e -> mapEvent(e))
+                .filter(e-> !e.getEventType().equals(EnumEventType.camera))
+                .findFirst();
+
+        if(latestNonCameraEvent.isPresent()) {
+            Event latestEvent = latestNonCameraEvent.get();
+            LOG.debug("Latest non cam event id [{}] type [{}]", latestEvent.getId(), latestEvent.getEventType());
+        }
+
+        if(oldestNonCameraEvent.isPresent()) {
+            Event oldestEvent = oldestNonCameraEvent.get();
+            LOG.debug("Oldest non cam event id [{}] type [{}]", oldestEvent.getId(), oldestEvent.getEventType());
+        }
+
+        List<EntityEvent> events = listEntityEvent.stream()
+                .sorted(Comparator.comparing(EntityEvent::getId))
+                .filter(e -> {
+                    if(latestNonCameraEvent.isPresent()) {
+                        return e.getId() < latestNonCameraEvent.get().getId();
+                    }
+                    return true;
+                })
+                .filter(e -> {
+                    if(oldestNonCameraEvent.isPresent()) {
+                        return e.getId() > oldestNonCameraEvent.get().getId();
+                    }
+                    return true;
+                })
+                .filter(e -> e.getEnumEventType().equals(EnumEventType.camera))
                 .collect(Collectors.toList());
-        //return null;
+
+        LOG.debug("Found events [{}]", events.size());
+
+        events.forEach(e -> LOG.debug(" event id [{}] type [{}]", e.getId(), e.getEnumEventType()));
+
+        return events.stream()
+                .map(e -> repositoryEventMotion.getByEntityEvent(e))
+                .map(m -> mapMotion(m))
+                .collect(Collectors.toList());
     }
 
     private Event mapEvent(EntityEvent entityEvent) {
@@ -184,7 +231,8 @@ public class ServiceEventImpl implements ServiceEvent {
     private Motion mapMotion(EntityEventMotion entityEventMotion) {
         Motion motion = new Motion()
                 .setId(entityEventMotion.getId())
-                .setDateEvent(entityEventMotion.getDateEvent())
+                .setDateEvent(entityEventMotion.getEntityEvent().getDateEvent())
+                .setIdEvent(entityEventMotion.getEntityEvent().getId())
                 .setFilename(entityEventMotion.getFilename());
         return motion;
     }

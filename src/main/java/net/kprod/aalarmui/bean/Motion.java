@@ -12,6 +12,7 @@ public class Motion {
     private Long id;
     private LocalDateTime dateEvent;
     private String filename;
+    private Long idEvent;
 
     public Long getId() {
         return id;
@@ -38,6 +39,15 @@ public class Motion {
 
     public Motion setFilename(String filename) {
         this.filename = filename;
+        return this;
+    }
+
+    public Long getIdEvent() {
+        return idEvent;
+    }
+
+    public Motion setIdEvent(Long idEvent) {
+        this.idEvent = idEvent;
         return this;
     }
 }
