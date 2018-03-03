@@ -7,15 +7,12 @@
     <meta name="author" content="">
     <link rel="icon" href="aalarm.ico">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>aalarm</title>
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/datatables.min.css"/>
-    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet"/>
-
-    <!-- Custom styles for this template -->
-    <link href="css/aalarm.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/aalarm.css">
 </head>
 
 <body>
@@ -93,27 +90,20 @@
                 <th>Emmiter</th>
                 <th>Type</th>
                 <th>Status</th>
-
             </tr>
             </thead>
             <tbody id="idListEvent">
             </tbody>
         </table>
-
         </div>
     </div>
+</main>
 
-
-</main><!-- /.container -->
-
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/datatables.min.js"></script>
-<script src="js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/datatables.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
 
 <script type="text/javascript">
     $( document ).ready(function() {
@@ -189,39 +179,8 @@
             }
             var data = table.row(this).data();
             console.log(data);
-            //displayRowData(data);
         } );
-
-//        $.getJSON('/event/list')
-//            .done(function( data ) {
-//                //console.log(data);
-//                $.each( data, function( key, val ) {
-//                    console.log(key + val)
-//                });
-//            }).fail(function(data){
-//            console.log("failed " + data);
-//        });
-
-
-
-//        $.getJSON('/event/alarm/last')
-//            .done(function( data ) {
-//                console.log(data);
-//                $('#idAlarmState').html(data.eventStatus);
-//            }).fail(function(data){
-//            console.log("failed " + data);
-//        });
-//
-//        $.getJSON('/event/sensor/last')
-//            .done(function( data ) {
-//                console.log(data);
-//                $('#idSensorStatus').html(data.eventStatus);
-//            }).fail(function(data){
-//            console.log("failed " + data);
-//        });
     });
-
 </script>
-
 </body>
 </html>
