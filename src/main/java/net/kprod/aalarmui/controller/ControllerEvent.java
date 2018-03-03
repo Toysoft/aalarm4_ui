@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import net.kprod.aalarmui.bean.DataTableData;
 import net.kprod.aalarmui.bean.DataTablesRequest;
 import net.kprod.aalarmui.bean.Event;
+import net.kprod.aalarmui.bean.UiDefaults;
 import net.kprod.aalarmui.db.entity.EntityEvent;
 import net.kprod.aalarmui.service.ServiceEvent;
 import org.slf4j.Logger;
@@ -49,7 +50,7 @@ public class ControllerEvent {
     @ApiOperation(value = "List events")
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DataTableData> page(@RequestBody DataTablesRequest dataTablesRequest) throws Exception {
-        return ResponseEntity.ok(serviceEvent.pageEvent(dataTablesRequest, LocalDateTime.now().minusDays(1), LocalDateTime.now()));
+        return ResponseEntity.ok(serviceEvent.pageEvent(dataTablesRequest));
     }
 
     @ApiOperation(value = "Last alarm state")
@@ -63,4 +64,13 @@ public class ControllerEvent {
     public ResponseEntity<Event> lastSensorStatus() throws Exception {
         return ResponseEntity.ok(serviceEvent.getLastSensorStatus());
     }
+
+    @ApiOperation(value = "Ui defaults")
+    @RequestMapping(value = "/defaults", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UiDefaults> defaults() throws Exception {
+        UiDefaults uiDefaults = new UiDefaults();
+        return ResponseEntity.ok(uiDefaults);
+    }
+
+
 }

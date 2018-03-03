@@ -21,7 +21,7 @@ public interface ServiceEvent {
     void recordEventMotion(String pathImage) throws ServiceException;
     List<Event> listEventAll() throws ServiceException;
     List<Event> listEventByType(EnumEventType eventType) throws ServiceException;
-    DataTableData pageEvent(DataTablesRequest dataTablesRequest, LocalDateTime from, LocalDateTime to);
+    DataTableData pageEvent(DataTablesRequest dataTablesRequest);
     Event getLastAlarmState() throws ServiceException;
     Event getLastSensorStatus() throws ServiceException;
     List<Motion> listMotionAll() throws ServiceException;

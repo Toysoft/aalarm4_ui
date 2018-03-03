@@ -1,9 +1,6 @@
 package net.kprod.aalarmui.service;
 
-import net.kprod.aalarmui.bean.DataTableData;
-import net.kprod.aalarmui.bean.DataTablesRequest;
-import net.kprod.aalarmui.bean.Event;
-import net.kprod.aalarmui.bean.Motion;
+import net.kprod.aalarmui.bean.*;
 import net.kprod.aalarmui.db.entity.EntityEvent;
 import net.kprod.aalarmui.db.entity.EntityEventMotion;
 import net.kprod.aalarmui.db.repository.RepositoryEvent;
@@ -20,11 +17,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -98,7 +97,7 @@ public class ServiceEventImpl implements ServiceEvent {
     }
 
     @Override
-    public DataTableData pageEvent(DataTablesRequest dataTablesRequest, LocalDateTime from, LocalDateTime to) {
+    public DataTableData pageEvent(DataTablesRequest dataTablesRequest) {
         Optional<String> orderBy = Optional.empty();
         Optional<Sort.Direction> orderDir = Optional.empty();
 
@@ -113,7 +112,21 @@ public class ServiceEventImpl implements ServiceEvent {
                 orderDir.orElse(Sort.Direction.DESC),
                 orderBy.orElse("id"));
 
-        Page<EntityEvent> pageEntityEvent = repositoryPageableEvent.findByDateEventBetween(pageable, from, to);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        UiDefaults uiDefaults = new UiDefaults();
+
+        if(StringUtils.isEmpty(dataTablesRequest.getDateFrom())) {
+            dataTablesRequest.setDateFrom(uiDefaults.getDateFrom());
+        }
+        if(StringUtils.isEmpty(dataTablesRequest.getDateTo())) {
+            dataTablesRequest.setDateTo(uiDefaults.getDateTo());
+        }
+
+        LocalDateTime dateFrom = LocalDateTime.parse(dataTablesRequest.getDateFrom(), formatter);
+        LocalDateTime dateTo = LocalDateTime.parse(dataTablesRequest.getDateTo(), formatter);
+
+        Page<EntityEvent> pageEntityEvent = repositoryPageableEvent.findByDateEventBetween(pageable, dateFrom, dateTo);
 
         long total = pageEntityEvent.getTotalElements();
         DataTableData data = mapEventsToDataTableData(dataTablesRequest.getDraw(), total, pageEntityEvent.getContent());

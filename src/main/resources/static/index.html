@@ -73,6 +73,10 @@
                 <input id="idDatePickerTo" type="text" class="form-control datepicker" placeholder="" aria-describedby="idDatePickerToLabel"/>
             </div>
         </div>
+
+        <div class="col-sm">
+            <button type="button" class="btn btn-outline-secondary" id="idBtRefresh">Refresh</button>
+        </div>
     </div>
 
 
@@ -114,6 +118,16 @@
 <script type="text/javascript">
     $( document ).ready(function() {
 
+        $.getJSON('/event/defaults')
+            .done(function( data ) {
+                console.log(data);
+                $('#idDatePickerFrom').val(data.dateFrom);
+                $('#idDatePickerTo').val(data.dateTo);
+            }).fail(function(data){
+            console.log("failed " + data);
+        });
+
+
         $('#idDatePickerFrom').datetimepicker({
             format: 'yyyy-mm-dd hh:ii',
             autoclose: true,
@@ -128,6 +142,7 @@
             todayHighlight: true
         });
 
+
         table = $('#idTableEvent').DataTable({
             "searching": false,
             "serverSide": true,
@@ -136,6 +151,9 @@
                 'type': 'POST',
                 'data':function(data)
                 {
+                    //on page load, these values are not defined yet ; the controller sets them to defaults
+                    data.dateFrom = $('#idDatePickerFrom').val();
+                    data.dateTo = $('#idDatePickerTo').val();
                     return data = JSON.stringify(data);
                 },
                 'dataType': "json",
@@ -154,15 +172,24 @@
             "order" : [[0, "desc"]]
         });
 
-        $.getJSON('/event/list')
-            .done(function( data ) {
-                //console.log(data);
-                $.each( data, function( key, val ) {
-                    console.log(key + val)
-                });
-            }).fail(function(data){
-            console.log("failed " + data);
+        //Update table
+        $("#idBtRefresh").click(function () {
+            //reload the table
+            table.ajax.reload();
         });
+
+
+//        $.getJSON('/event/list')
+//            .done(function( data ) {
+//                //console.log(data);
+//                $.each( data, function( key, val ) {
+//                    console.log(key + val)
+//                });
+//            }).fail(function(data){
+//            console.log("failed " + data);
+//        });
+
+
 
 //        $.getJSON('/event/alarm/last')
 //            .done(function( data ) {
