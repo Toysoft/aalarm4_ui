@@ -90,13 +90,6 @@ public class ServiceEventImpl implements ServiceEvent {
     }
 
     @Override
-    public List<Event> listEventAll() {
-        return repositoryEvent.findAll().stream()
-                .map(e -> mapEvent(e))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public DataTableData pageEvent(DataTablesRequest dataTablesRequest) {
         Optional<String> orderBy = Optional.empty();
         Optional<Sort.Direction> orderDir = Optional.empty();
@@ -146,14 +139,6 @@ public class ServiceEventImpl implements ServiceEvent {
         d.setRecordsTotal(Math.toIntExact(total));
 
         return d;
-    }
-
-    @Override
-    public List<Event> listEventByType(EnumEventType eventType) {
-        return repositoryEvent.findAll().stream()
-                .filter(e -> e.getEnumSensorStatus().getSensorType().equals(eventType))
-                .map(e -> mapEvent(e))
-                .collect(Collectors.toList());
     }
 
     @Override

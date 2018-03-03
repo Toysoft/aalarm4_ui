@@ -19,8 +19,6 @@ public interface ServiceEvent {
     void recordEventState(String state) throws ServiceException;
     void recordEventSensor(String emmiterId, String status) throws ServiceException;
     void recordEventMotion(String pathImage) throws ServiceException;
-    List<Event> listEventAll() throws ServiceException;
-    List<Event> listEventByType(EnumEventType eventType) throws ServiceException;
     DataTableData pageEvent(DataTablesRequest dataTablesRequest);
     Event getLastAlarmState() throws ServiceException;
     Event getLastSensorStatus() throws ServiceException;

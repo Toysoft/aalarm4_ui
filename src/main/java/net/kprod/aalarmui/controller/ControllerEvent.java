@@ -42,12 +42,6 @@ public class ControllerEvent {
     }
 
     @ApiOperation(value = "List events")
-    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Event>> list() throws Exception {
-        return ResponseEntity.ok(serviceEvent.listEventAll());
-    }
-
-    @ApiOperation(value = "List events")
     @RequestMapping(value = "/page", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DataTableData> page(@RequestBody DataTablesRequest dataTablesRequest) throws Exception {
         return ResponseEntity.ok(serviceEvent.pageEvent(dataTablesRequest));
