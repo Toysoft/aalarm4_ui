@@ -163,9 +163,12 @@ public class ServiceEventImpl implements ServiceEvent {
 
     @Override
     public List<Motion> listMotionAroundEvent(LocalDateTime dateFrom, LocalDateTime dateTo, Long idEvent) throws ServiceException {
+        EntityEvent entityEvent = repositoryEvent.getOne(idEvent);
 
-
-        return null;
+        return repositoryEventMotion.findAllByDateEventBetween(dateFrom, dateTo).stream()
+                .map(e -> mapMotion(e))
+                .collect(Collectors.toList());
+        //return null;
     }
 
     private Event mapEvent(EntityEvent entityEvent) {

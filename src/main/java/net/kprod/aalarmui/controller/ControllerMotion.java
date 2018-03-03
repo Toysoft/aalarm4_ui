@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -37,5 +38,11 @@ public class ControllerMotion {
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Motion>> list() throws Exception {
         return ResponseEntity.ok(serviceEvent.listMotionAll());
+    }
+
+    @ApiOperation(value = "List events 2")
+    @RequestMapping(value = "/list2", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Motion>> list2(@RequestParam Long idEvent) throws Exception {
+        return ResponseEntity.ok(serviceEvent.listMotionAroundEvent(LocalDateTime.now().minusDays(2), LocalDateTime.now(), idEvent));
     }
 }
