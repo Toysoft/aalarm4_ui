@@ -10,7 +10,7 @@
     <title>Starter Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/datatables.min.css"/>
     <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet"/>
 
@@ -85,7 +85,7 @@
 
         <img src="motions/01-20180302112637-00.jpg"/>
 
-        <table id="idTableEvent" class="display" cellspacing="0" width="100%">
+         <table id="idTableEvent" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>Id</th>
@@ -110,9 +110,9 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="js/jquery-3.3.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script type="text/javascript" src="js/datatables.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/datatables.min.js"></script>
 <script src="js/bootstrap-datetimepicker.min.js"></script>
 
 <script type="text/javascript">
@@ -178,6 +178,19 @@
             table.ajax.reload();
         });
 
+        //Row selected
+        $('#idTableEvent tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+            var data = table.row(this).data();
+            console.log(data);
+            //displayRowData(data);
+        } );
 
 //        $.getJSON('/event/list')
 //            .done(function( data ) {
