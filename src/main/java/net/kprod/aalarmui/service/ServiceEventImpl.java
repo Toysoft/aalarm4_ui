@@ -72,10 +72,10 @@ public class ServiceEventImpl implements ServiceEvent {
     }
 
     @Transactional
-    private void recordEvent(String emmiterId, EnumEventStatus status) {
+    private EntityEvent recordEvent(String emmiterId, EnumEventStatus status) {
         EntityEvent entityEvent = new EntityEvent(LocalDateTime.now(), emmiterId, status);
-        repositoryEvent.save(entityEvent);
-        LOG.debug("Recorded event [{}] from [{}]", status, emmiterId);
+        LOG.debug("Record event [{}] from [{}]", status, emmiterId);
+        return repositoryEvent.save(entityEvent);
     }
 
     @Override
@@ -84,9 +84,10 @@ public class ServiceEventImpl implements ServiceEvent {
         Path path = Paths.get(pathImage);
         String filename = path.getFileName().toString();
 
-        EntityEventMotion entityEventMotion = new EntityEventMotion(LocalDateTime.now(), filename);
+        EntityEvent entityEvent = recordEvent(EnumEventType.camera.name(), EnumEventStatus.motion);
+
+        EntityEventMotion entityEventMotion = new EntityEventMotion(entityEvent, LocalDateTime.now(), filename);
         repositoryEventMotion.save(entityEventMotion);
-        recordEvent(EnumEventType.camera.name(), EnumEventStatus.motion);
     }
 
     @Override
@@ -158,6 +159,13 @@ public class ServiceEventImpl implements ServiceEvent {
         return repositoryEventMotion.findAll().stream()
                 .map(e -> mapMotion(e))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Motion> listMotionAroundEvent(LocalDateTime dateFrom, LocalDateTime dateTo, Long idEvent) throws ServiceException {
+
+
+        return null;
     }
 
     private Event mapEvent(EntityEvent entityEvent) {

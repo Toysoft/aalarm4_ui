@@ -1,9 +1,6 @@
 package net.kprod.aalarmui.db.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -14,15 +11,17 @@ public class EntityEventMotion {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private LocalDateTime dateEvent;
-
     private String filename;
+
+    @OneToOne
+    private EntityEvent entityEvent;
 
     public EntityEventMotion() {
     }
 
-    public EntityEventMotion(LocalDateTime dateEvent, String filename) {
+    public EntityEventMotion(EntityEvent entityEvent, LocalDateTime dateEvent, String filename) {
+        this.entityEvent = entityEvent;
         this.dateEvent = dateEvent;
         this.filename = filename;
     }

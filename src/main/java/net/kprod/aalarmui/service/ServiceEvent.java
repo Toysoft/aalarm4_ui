@@ -23,4 +23,5 @@ public interface ServiceEvent {
     Event getLastAlarmState() throws ServiceException;
     Event getLastSensorStatus() throws ServiceException;
     List<Motion> listMotionAll() throws ServiceException;
+    List<Motion> listMotionAroundEvent(LocalDateTime dateFrom, LocalDateTime dateTo, Long idEvent) throws ServiceException;
 }
