@@ -37,4 +37,5 @@ public class UiDefaults {
         this.dateTo = dateTo;
         return this;
     }
+
 }
