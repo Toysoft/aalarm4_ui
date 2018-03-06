@@ -39,4 +39,13 @@ public class SwaggerConfig {
 				.build();
 	}
 
+	@Bean
+	public Docket remoteApi() {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("remote")
+				.apiInfo(apiInfo()).select()
+				.paths(PathSelectors.regex("/remote/.*"))
+				.build();
+	}
+
 }

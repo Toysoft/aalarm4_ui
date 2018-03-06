@@ -12,7 +12,8 @@ public enum EnumEventStatus {
     breach(EnumEventType.alarm),
     warning(EnumEventType.alarm),
     alert(EnumEventType.alarm),
-    motion(EnumEventType.camera);
+    motion(EnumEventType.camera),
+    unknown(EnumEventType.unknown);
 
     private EnumEventType sensorType;
 
