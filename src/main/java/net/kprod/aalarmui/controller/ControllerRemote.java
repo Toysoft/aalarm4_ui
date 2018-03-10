@@ -24,10 +24,17 @@ public class ControllerRemote {
     private ServiceRemoteImpl serviceRemote;
 
     @ApiOperation(value = "Get current state")
-    @RequestMapping(value = "/state", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/state", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> getCurrentState() throws Exception {
         EnumEventStatus status = serviceRemote.getCurrentStatus();
         return ResponseEntity.ok(status.name());
+    }
+
+    @ApiOperation(value = "Toggle state")
+    @RequestMapping(value = "/state/toggle", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<String> toggleState() throws Exception {
+        serviceRemote.toggleStatus();
+        return ResponseEntity.ok("ok");
     }
 
 

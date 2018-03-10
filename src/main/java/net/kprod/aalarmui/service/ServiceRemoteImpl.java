@@ -44,21 +44,7 @@ public class ServiceRemoteImpl implements ServiceRemote {
     @Override
     public EnumEventStatus getCurrentStatus() throws ServiceException {
 
-        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder()
-                .nonPreemptive()
-                .credentials(user, password)
-                .build();
-
-        ClientConfig clientConfig = new ClientConfig();
-        clientConfig.register(feature) ;
-
-        Client client = ClientBuilder.newClient(clientConfig);
-
-        Response response = client
-                .target(remoteHostname + ":" + port)
-                .path(routeCurrentStatus)
-                .request(MediaType.APPLICATION_JSON)
-                .get(Response.class);
+        Response response = callGetFromRemote(routeCurrentStatus);
 
         EnumEventStatus enumEventStatus = EnumEventStatus.unknown;
         if(response.getStatus() == HttpStatus.OK.value()) {
@@ -81,6 +67,32 @@ public class ServiceRemoteImpl implements ServiceRemote {
 
     @Override
     public void toggleStatus() throws ServiceException {
+        Response response = callGetFromRemote(routeStateToggle);
 
+        if(response.getStatus() == HttpStatus.OK.value()) {
+            String content = response.readEntity(String.class);
+            LOG.debug(content);
+        } else {
+            LOG.error("Error " + response.getStatus());
+        }
     }
+
+    private Response callGetFromRemote(String route) {
+        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder()
+                .nonPreemptive()
+                .credentials(user, password)
+                .build();
+
+        ClientConfig clientConfig = new ClientConfig();
+        clientConfig.register(feature) ;
+
+        Client client = ClientBuilder.newClient(clientConfig);
+
+        return client
+                .target(remoteHostname + ":" + port)
+                .path(route)
+                .request(MediaType.APPLICATION_JSON)
+                .get(Response.class);
+    }
+
 }
