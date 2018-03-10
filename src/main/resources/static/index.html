@@ -53,8 +53,8 @@
 <main role="main" class="container">
 
     <div class="row">
-        <div class="col-sm">
-            current
+        <div class="col-sm" id="idTargetState">
+            <span class="badge badge-pill badge-secondary">Unknwon</span>
         </div>
 
         <div class="col-sm">
@@ -146,14 +146,8 @@
 
     $( document ).ready(function() {
 
-        $("#idBtToggle").click(function () {
-            $.getJSON('/remote/state/toggle')
-                .done(function( data ) {
-                    console.log(data);
-                }).fail(function(data){
-                console.log("failed " + data);
-            });
-        });
+
+        //<span class="badge badge-pill badge-success">Success</span>
 
         $.getJSON('/event/defaults')
             .done(function( data ) {
@@ -161,23 +155,20 @@
                 $('#idDatePickerFrom').val(data.dateFrom);
                 $('#idDatePickerTo').val(data.dateTo);
             }).fail(function(data){
-            console.log("failed " + data);
+                console.log("failed " + data);
         });
 
+        $.getJSON('/remote/state')
+            .done(function( data ) {
+                console.log(data);
 
-        $('#idDatePickerFrom').datetimepicker({
-            format: 'yyyy-mm-dd hh:ii',
-            autoclose: true,
-            todayBtn: true,
-            todayHighlight: true
+                var stateHtml = '<span class="badge badge-pill badge-' + data.context + ' ">' + data.status + '</span>';
+
+                $('#idTargetState').html(stateHtml);
+            }).fail(function(data){
+                console.log("failed " + data);
         });
 
-        $('#idDatePickerTo').datetimepicker({
-            format: 'yyyy-mm-dd hh:ii',
-            autoclose: true,
-            todayBtn: true,
-            todayHighlight: true
-        });
 
 
         table = $('#idTableEvent').DataTable({
@@ -207,6 +198,30 @@
 
             ],
             "order" : [[0, "desc"]]
+        });
+
+        $('#idDatePickerFrom').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii',
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true
+        });
+
+        $('#idDatePickerTo').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii',
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true
+        });
+
+
+        $("#idBtToggle").click(function () {
+            $.getJSON('/remote/state/toggle')
+                .done(function( data ) {
+                    console.log(data);
+                }).fail(function(data){
+                console.log("failed " + data);
+            });
         });
 
         //Update table

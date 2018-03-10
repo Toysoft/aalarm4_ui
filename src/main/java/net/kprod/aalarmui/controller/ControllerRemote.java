@@ -1,6 +1,7 @@
 package net.kprod.aalarmui.controller;
 
 import io.swagger.annotations.ApiOperation;
+import net.kprod.aalarmui.bean.Status;
 import net.kprod.aalarmui.enums.EnumEventStatus;
 import net.kprod.aalarmui.service.ServiceRemoteImpl;
 import org.slf4j.Logger;
@@ -24,10 +25,37 @@ public class ControllerRemote {
     private ServiceRemoteImpl serviceRemote;
 
     @ApiOperation(value = "Get current state")
-    @RequestMapping(value = "/state", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> getCurrentState() throws Exception {
+    @RequestMapping(value = "/state", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Status> getCurrentState() throws Exception {
         EnumEventStatus status = serviceRemote.getCurrentStatus();
-        return ResponseEntity.ok(status.name());
+
+        Status uiStatus = new Status();
+        uiStatus.setStatus(status);
+        switch (status) {
+            case offline:
+                uiStatus.setContext("info");
+                break;
+            case idle:
+                uiStatus.setContext("warning");
+                break;
+            case online:
+                uiStatus.setContext("success");
+                break;
+            case breach:
+                uiStatus.setContext("warning");
+                break;
+            case warning:
+                uiStatus.setContext("warning");
+                break;
+            case alert:
+                uiStatus.setContext("danger");
+                break;
+            default:
+                uiStatus.setContext("secondary");
+                break;
+        }
+
+        return ResponseEntity.ok(uiStatus);
     }
 
     @ApiOperation(value = "Toggle state")

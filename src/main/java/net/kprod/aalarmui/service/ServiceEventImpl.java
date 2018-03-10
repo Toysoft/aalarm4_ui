@@ -65,7 +65,7 @@ public class ServiceEventImpl implements ServiceEvent {
         }
 
         if(!enumEventStatus.getSensorType().equals(enumEventType)) {
-            LOG.error("State [{}] is not a valid alarm", status);
+            LOG.error("Status [{}] is not a valid alarm", status);
             return null;
         }
 
