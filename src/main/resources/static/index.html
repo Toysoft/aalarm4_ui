@@ -144,20 +144,8 @@
 
 <script type="text/javascript">
 
-    $( document ).ready(function() {
-
-
-        //<span class="badge badge-pill badge-success">Success</span>
-
-        $.getJSON('/event/defaults')
-            .done(function( data ) {
-                console.log(data);
-                $('#idDatePickerFrom').val(data.dateFrom);
-                $('#idDatePickerTo').val(data.dateTo);
-            }).fail(function(data){
-                console.log("failed " + data);
-        });
-
+    function refreshState() {
+        //get current state
         $.getJSON('/remote/state')
             .done(function( data ) {
                 console.log(data);
@@ -166,10 +154,13 @@
 
                 $('#idTargetState').html(stateHtml);
             }).fail(function(data){
-                console.log("failed " + data);
+            console.log("failed to get current state" + data);
         });
+    }
 
+    $( document ).ready(function() {
 
+        refreshState();
 
         table = $('#idTableEvent').DataTable({
             "searching": false,
@@ -214,14 +205,26 @@
             todayHighlight: true
         });
 
+        //get defaults
+        $.getJSON('/event/defaults')
+            .done(function( data ) {
+                console.log(data);
+                $('#idDatePickerFrom').val(data.dateFrom);
+                $('#idDatePickerTo').val(data.dateTo);
+            }).fail(function(data){
+            console.log("failed " + data);
+        });
 
+
+        //toggle remote state
         $("#idBtToggle").click(function () {
-            $.getJSON('/remote/state/toggle')
+            $.get('/remote/state/toggle')
                 .done(function( data ) {
                     console.log(data);
+                    refreshState();
                 }).fail(function(data){
-                console.log("failed " + data);
-            });
+                    console.log("failed toggle state " + data);
+                });
         });
 
         //Update table
