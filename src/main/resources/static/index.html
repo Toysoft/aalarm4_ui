@@ -162,7 +162,7 @@
             .done(function( data ) {
                 console.log(data);
 
-                var stateHtml = '<span class="badge badge-pill badge-' + data.context + ' ">' + data.status + '</span>';
+                var stateHtml = '<span class="badge badge-pill badge-' + data.uiStyle + ' ">' + data.status + '</span>';
 
                 $('#idTargetState').html(stateHtml);
             }).fail(function(data){

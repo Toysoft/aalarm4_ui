@@ -33,25 +33,25 @@ public class ControllerRemote {
         uiStatus.setStatus(status);
         switch (status) {
             case offline:
-                uiStatus.setContext("info");
+                uiStatus.setUiStyle("info");
                 break;
             case idle:
-                uiStatus.setContext("warning");
+                uiStatus.setUiStyle("warning");
                 break;
             case online:
-                uiStatus.setContext("success");
+                uiStatus.setUiStyle("success");
                 break;
             case breach:
-                uiStatus.setContext("warning");
+                uiStatus.setUiStyle("warning");
                 break;
             case warning:
-                uiStatus.setContext("warning");
+                uiStatus.setUiStyle("warning");
                 break;
             case alert:
-                uiStatus.setContext("danger");
+                uiStatus.setUiStyle("danger");
                 break;
             default:
-                uiStatus.setContext("secondary");
+                uiStatus.setUiStyle("secondary");
                 break;
         }
 

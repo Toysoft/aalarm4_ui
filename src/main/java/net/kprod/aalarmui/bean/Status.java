@@ -2,15 +2,12 @@ package net.kprod.aalarmui.bean;
 
 import net.kprod.aalarmui.enums.EnumEventStatus;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 /**
  * Created by kemkem on 3/1/18.
  */
 public class Status {
     private EnumEventStatus status;
-    private String context;
+    private String uiStyle;
 
     public EnumEventStatus getStatus() {
         return status;
@@ -21,12 +18,12 @@ public class Status {
         return this;
     }
 
-    public String getContext() {
-        return context;
+    public String getUiStyle() {
+        return uiStyle;
     }
 
-    public Status setContext(String context) {
-        this.context = context;
+    public Status setUiStyle(String uiStyle) {
+        this.uiStyle = uiStyle;
         return this;
     }
 }
