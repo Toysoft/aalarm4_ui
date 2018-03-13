@@ -48,4 +48,13 @@ public class SwaggerConfig {
 				.build();
 	}
 
+	@Bean
+	public Docket keysApi() {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("keys")
+				.apiInfo(apiInfo()).select()
+				.paths(PathSelectors.regex("/keys/.*"))
+				.build();
+	}
+
 }
