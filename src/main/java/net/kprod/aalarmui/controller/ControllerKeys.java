@@ -34,6 +34,30 @@ public class ControllerKeys {
         return ResponseEntity.ok("ok");
     }
 
+    @ApiOperation(value = "Revoke key")
+    @RequestMapping(value = "/revoke", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<String> revoke(@RequestParam String uid) throws Exception {
+        LOG.debug("Revoke key uid " + uid);
+        serviceNfcKey.revokeKey(uid);
+        return ResponseEntity.ok("ok");
+    }
+
+    @ApiOperation(value = "Enable key")
+    @RequestMapping(value = "/enable", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<String> enable(@RequestParam String uid) throws Exception {
+        LOG.debug("Enable key uid " + uid);
+        serviceNfcKey.enableKey(uid);
+        return ResponseEntity.ok("ok");
+    }
+
+    @ApiOperation(value = "Disable key")
+    @RequestMapping(value = "/disable", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<String> disable(@RequestParam String uid) throws Exception {
+        LOG.debug("Disable key uid " + uid);
+        serviceNfcKey.disableKey(uid);
+        return ResponseEntity.ok("ok");
+    }
+
     @ApiOperation(value = "Check key validity")
     @RequestMapping(value = "/verify", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> verify(@RequestParam String uid) throws Exception {
