@@ -100,10 +100,13 @@ public class ServiceNfcKeyImpl implements ServiceNfcKey {
 
     @Override
     public boolean verifyKey(String uid) {
+        LOG.debug("Verify uid [{}]", uid);
         Optional<NfcKey> optNfcKey = this.getKey(uid);
         if(optNfcKey.isPresent() && optNfcKey.get().isEnabled()) {
+            LOG.debug("Uid [{}] accepted", uid);
             return true;
         }
+        LOG.debug("Uid [{}] rejected", uid);
         return false;
     }
 
