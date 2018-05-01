@@ -57,4 +57,13 @@ public class SwaggerConfig {
 				.build();
 	}
 
+	@Bean
+	public Docket utilsApi() {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.groupName("utils")
+				.apiInfo(apiInfo()).select()
+				.paths(PathSelectors.regex("/utils/.*"))
+				.build();
+	}
+
 }
